@@ -1,5 +1,9 @@
 use super::*;
-use std::ptr::{addr_of, null_mut, NonNull};
+use std::{
+    mem::forget,
+    ops::Deref,
+    ptr::{null_mut, NonNull},
+};
 
 pub unsafe trait ComVtable: 'static + Copy {
     const IID: v3_iid;
@@ -13,31 +17,36 @@ pub struct Com<T: ComVtable> {
 }
 
 impl<T: ComVtable> Com<T> {
-    pub unsafe fn from_owned(ptr: *mut T) -> Option<Self> {
-        Some(Self {
-            ptr: NonNull::new(ptr)?,
-        })
+    /// Creates a new `Com` from an owned pointer. Does not increment the reference count.
+    ///
+    /// SAFETY: `ptr` must point to a valid COM vtable and be safe to dereference.
+    pub unsafe fn from_owned(ptr: *mut T) -> Self {
+        Self {
+            ptr: NonNull::new_unchecked(ptr),
+        }
     }
 
-    pub unsafe fn from_shared(ptr: *mut T) -> Option<Self> {
+    /// Creates a new `Com` from a shared pointer. Increments the reference count.
+    ///
+    /// SAFETY: `ptr` must point to a valid COM vtable and be safe to dereference.
+    pub unsafe fn from_shared(ptr: *mut T) -> Self {
         let comrc = Self {
-            ptr: NonNull::new(ptr)?,
+            ptr: NonNull::new_unchecked(ptr),
         };
-
         comrc.add_ref();
-        Some(comrc)
+        comrc
     }
 
     pub unsafe fn add_ref(&self) {
         let funknown = self.ptr.as_ptr() as *mut v3_funknown;
-        if let Some(add_ref) = *addr_of!((*funknown).add_ref) {
+        if let Some(add_ref) = (*funknown).add_ref {
             add_ref(funknown as _);
         }
     }
 
     pub unsafe fn release(&self) {
         let funknown = self.ptr.as_ptr() as *mut v3_funknown;
-        if let Some(release) = *addr_of!((*funknown).release) {
+        if let Some(release) = (*funknown).release {
             release(funknown as _);
         }
     }
@@ -53,10 +62,12 @@ impl<T: ComVtable> Com<T> {
     pub fn cast<I: ComVtable>(&self) -> Option<Com<I>> {
         unsafe {
             let funknown = self.ptr.as_ptr() as *mut v3_funknown;
-            if let Some(query_interface) = *addr_of!((*funknown).query_interface) {
+            if let Some(query_interface) = (*funknown).query_interface {
                 let mut obj = null_mut();
-                if query_interface(funknown as _, &I::IID as *const u8, &mut obj) == V3_RESULT_OK {
-                    Com::from_owned(obj as *mut _)
+                if query_interface(funknown as _, &I::IID as *const u8, &mut obj) == V3_RESULT_OK
+                    && !obj.is_null()
+                {
+                    Some(Com::from_owned(obj as *mut _))
                 } else {
                     None
                 }
@@ -68,6 +79,20 @@ impl<T: ComVtable> Com<T> {
 
     pub fn as_ptr(&self) -> *mut T {
         self.ptr.as_ptr()
+    }
+
+    pub fn into_raw(self) -> *mut T {
+        let ptr = self.ptr.as_ptr();
+        forget(self);
+        ptr
+    }
+}
+
+impl<T: ComVtable> Deref for Com<T> {
+    type Target = T;
+
+    fn deref(&self) -> &Self::Target {
+        unsafe { self.ptr.as_ref() }
     }
 }
 
