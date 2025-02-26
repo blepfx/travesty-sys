@@ -2,7 +2,7 @@ use super::*;
 use std::{
     mem::forget,
     ops::Deref,
-    ptr::{null_mut, NonNull},
+    ptr::{NonNull, null_mut},
 };
 
 pub unsafe trait ComVtable: 'static + Copy {
@@ -17,12 +17,21 @@ pub struct Com<T: ComVtable> {
 }
 
 impl<T: ComVtable> Com<T> {
+    /// Creates a new `Com` from an owned pointer. Does not affect the reference count.
+    ///
+    /// SAFETY: `ptr` must point to a valid COM vtable and be safe to dereference.
+    pub unsafe fn from_borrowed<'a>(ptr: &'a *mut T) -> &'a Self {
+        unsafe { std::mem::transmute(ptr) }
+    }
+
     /// Creates a new `Com` from an owned pointer. Does not increment the reference count.
     ///
     /// SAFETY: `ptr` must point to a valid COM vtable and be safe to dereference.
     pub unsafe fn from_owned(ptr: *mut T) -> Self {
-        Self {
-            ptr: NonNull::new_unchecked(ptr),
+        unsafe {
+            Self {
+                ptr: NonNull::new_unchecked(ptr),
+            }
         }
     }
 
@@ -30,24 +39,30 @@ impl<T: ComVtable> Com<T> {
     ///
     /// SAFETY: `ptr` must point to a valid COM vtable and be safe to dereference.
     pub unsafe fn from_shared(ptr: *mut T) -> Self {
-        let comrc = Self {
-            ptr: NonNull::new_unchecked(ptr),
-        };
-        comrc.add_ref();
-        comrc
+        unsafe {
+            let comrc = Self {
+                ptr: NonNull::new_unchecked(ptr),
+            };
+            comrc.add_ref();
+            comrc
+        }
     }
 
     pub unsafe fn add_ref(&self) {
-        let funknown = self.ptr.as_ptr() as *mut v3_funknown;
-        if let Some(add_ref) = (*funknown).add_ref {
-            add_ref(funknown as _);
+        unsafe {
+            let funknown = self.ptr.as_ptr() as *mut v3_funknown;
+            if let Some(add_ref) = (*funknown).add_ref {
+                add_ref(funknown as _);
+            }
         }
     }
 
     pub unsafe fn release(&self) {
-        let funknown = self.ptr.as_ptr() as *mut v3_funknown;
-        if let Some(release) = (*funknown).release {
-            release(funknown as _);
+        unsafe {
+            let funknown = self.ptr.as_ptr() as *mut v3_funknown;
+            if let Some(release) = (*funknown).release {
+                release(funknown as _);
+            }
         }
     }
 
