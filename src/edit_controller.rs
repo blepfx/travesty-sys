@@ -74,7 +74,7 @@ pub struct v3_unit_information {
             self_: *mut v3_void,
             list_id: i32,
             program_idx: i32,
-            name: *mut i16,
+            name: *mut v3_char16,
         ) -> v3_result,
     >,
     pub get_program_info: Option<
@@ -83,7 +83,7 @@ pub struct v3_unit_information {
             list_id: i32,
             program_idx: i32,
             attribute_id: *const v3_char8,
-            attribute_value: *mut i16,
+            attribute_value: *mut v3_char16,
         ) -> v3_result,
     >,
     pub has_program_pitch_names: Option<
@@ -95,7 +95,7 @@ pub struct v3_unit_information {
             list_id: i32,
             program_idx: i32,
             midi_pitch: i16,
-            name: *mut i16,
+            name: *mut v3_char16,
         ) -> v3_result,
     >,
     pub get_selected_unit: Option<unsafe extern "system" fn(self_: *mut v3_void) -> i32>,
@@ -178,14 +178,14 @@ pub struct v3_edit_controller {
             self_: *mut v3_void,
             arg1: v3_param_id,
             normalised: f64,
-            output: *mut i16,
+            output: *mut v3_char16,
         ) -> v3_result,
     >,
     pub get_parameter_value_for_string: Option<
         unsafe extern "system" fn(
             self_: *mut v3_void,
             arg1: v3_param_id,
-            input: *mut i16,
+            input: *mut v3_char16,
             output: *mut f64,
         ) -> v3_result,
     >,

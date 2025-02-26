@@ -43,7 +43,7 @@ pub struct v3_attribute_list {
         unsafe extern "system" fn(
             self_: *mut v3_void,
             id: *const v3_char8,
-            string: *mut i16,
+            string: *mut v3_char16,
             size: u32,
         ) -> v3_result,
     >,
@@ -101,7 +101,7 @@ pub struct v3_connection_point {
 pub struct v3_host_application {
     pub v3_funknown: v3_funknown,
     pub get_name:
-        Option<unsafe extern "system" fn(self_: *mut v3_void, name: *mut i16) -> v3_result>,
+        Option<unsafe extern "system" fn(self_: *mut v3_void, name: *mut v3_char16) -> v3_result>,
     pub create_instance: Option<
         unsafe extern "system" fn(
             self_: *mut v3_void,
