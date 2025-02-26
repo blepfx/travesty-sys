@@ -36,7 +36,7 @@ pub struct v3_attribute_list {
         unsafe extern "system" fn(
             self_: *mut v3_void,
             id: *const v3_char8,
-            string: *const i16,
+            string: *const v3_char16,
         ) -> v3_result,
     >,
     pub get_string: Option<

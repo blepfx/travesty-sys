@@ -66,7 +66,7 @@ pub struct v3_event_chord {
     pub bass_note: i16,
     pub mask: i16,
     pub text_len: u16,
-    pub text: *const i16,
+    pub text: *const v3_char16,
 }
 
 #[repr(C)]
@@ -75,7 +75,7 @@ pub struct v3_event_scale {
     pub root: i16,
     pub mask: i16,
     pub text_len: u16,
-    pub text: *const i16,
+    pub text: *const v3_char16,
 }
 
 #[repr(C)]
@@ -100,7 +100,7 @@ pub struct v3_event_note_expression_value {
 pub struct v3_event_note_expression_text {
     pub note_id: i32,
     pub text_len: u32,
-    pub text: *const i16,
+    pub text: *const v3_char16,
 }
 
 #[repr(C)]
