@@ -19,8 +19,8 @@ pub struct Com<T: ComVtable> {
 impl<T: ComVtable> Com<T> {
     /// Creates a new `Com` from an owned pointer. Does not affect the reference count.
     ///
-    /// SAFETY: `ptr` must point to a valid COM vtable and be safe to dereference.
-    pub unsafe fn from_borrowed<'a>(ptr: &'a *mut T) -> &'a Self {
+    /// SAFETY: `ptr` must point to a pointer to a valid COM vtable and be safe to dereference.
+    pub unsafe fn from_borrowed<'a>(ptr: *mut *mut T) -> &'a Self {
         unsafe { std::mem::transmute(ptr) }
     }
 
