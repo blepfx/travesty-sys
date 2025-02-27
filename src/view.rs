@@ -1,9 +1,9 @@
 use super::*;
 use std::os::fd::RawFd;
 
-pub const V3_VIEW_PLATFORM_HWND: &str = "HWND\0";
-pub const V3_VIEW_PLATFORM_NSVIEW: &str = "NSView\0";
-pub const V3_VIEW_PLATFORM_X11: &str = "X11EmbedWindowID\0";
+pub const V3_VIEW_PLATFORM_HWND: &str = "HWND";
+pub const V3_VIEW_PLATFORM_NSVIEW: &str = "NSView";
+pub const V3_VIEW_PLATFORM_X11: &str = "X11EmbedWindowID";
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
