@@ -51,8 +51,8 @@ pub const V3_PROCESS_MODE_REALTIME: i32 = 0;
 pub const V3_PROCESS_MODE_PREFETCH: i32 = 1;
 pub const V3_PROCESS_MODE_OFFLINE: i32 = 2;
 
-pub const V3_SYMBOLIC_SAMPLE_RATE_32: i32 = 0;
-pub const V3_SYMBOLIC_SAMPLE_RATE_64: i32 = 1;
+pub const V3_SYMBOLIC_SAMPLE_SIZE_32: i32 = 0;
+pub const V3_SYMBOLIC_SAMPLE_SIZE_64: i32 = 1;
 
 #[repr(C)]
 #[derive(Copy, Clone)]
