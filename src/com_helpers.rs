@@ -35,16 +35,16 @@ impl<T: ComVtable> Com<T> {
         }
     }
 
-    /// Creates a new `Com` from a shared pointer. Increments the reference count.
+    /// Creates a new `Com` from an owned pointer. Does not increment the reference count.
+    ///
+    /// Returns `None` if the pointer is null.
     ///
     /// SAFETY: `ptr` must point to a valid COM vtable and be safe to dereference.
-    pub unsafe fn from_shared(ptr: *mut T) -> Self {
-        unsafe {
-            let comrc = Self {
-                ptr: NonNull::new_unchecked(ptr),
-            };
-            comrc.add_ref();
-            comrc
+    pub unsafe fn from_nullable(ptr: *mut T) -> Option<Self> {
+        if ptr.is_null() {
+            None
+        } else {
+            unsafe { Some(Self::from_owned(ptr)) }
         }
     }
 
