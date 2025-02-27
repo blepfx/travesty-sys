@@ -24,6 +24,21 @@ impl<T: ComVtable> Com<T> {
         unsafe { std::mem::transmute(ptr) }
     }
 
+    /// Creates a new `Com` from an owned pointer. Does not affect the reference count.
+    ///
+    /// Returns `None` if the pointer (or the inner pointer) is null.
+    ///
+    /// SAFETY: `ptr` must point to a pointer to a valid COM vtable and be safe to dereference.
+    pub unsafe fn from_borrowed_nullable<'a>(ptr: *mut *mut T) -> Option<&'a Self> {
+        unsafe {
+            if ptr.is_null() || (*ptr).is_null() {
+                None
+            } else {
+                Some(Self::from_borrowed(ptr))
+            }
+        }
+    }
+
     /// Creates a new `Com` from an owned pointer. Does not increment the reference count.
     ///
     /// SAFETY: `ptr` must point to a valid COM vtable and be safe to dereference.
