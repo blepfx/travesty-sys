@@ -100,8 +100,9 @@ pub struct v3_connection_point {
 #[derive(Debug, Copy, Clone)]
 pub struct v3_host_application {
     pub v3_funknown: v3_funknown,
-    pub get_name:
-        Option<unsafe extern "system" fn(self_: *mut v3_void, name: *mut v3_char16) -> v3_result>,
+    pub get_name: Option<
+        unsafe extern "system" fn(self_: *mut v3_void, name: *mut [v3_char16; 128]) -> v3_result,
+    >,
     pub create_instance: Option<
         unsafe extern "system" fn(
             self_: *mut v3_void,
