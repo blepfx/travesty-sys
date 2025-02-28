@@ -18,6 +18,9 @@ pub const V3_EVENT_EXPR_VIBRATO: u32 = 3;
 pub const V3_EVENT_EXPR_EXPRESSION: u32 = 4;
 pub const V3_EVENT_EXPR_BRIGHTNESS: u32 = 5;
 
+pub const V3_EVENT_DATA_SYSEX: u32 = 0;
+pub const V3_EVENT_DATA_MIDI: u32 = 1;
+
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct v3_event {
