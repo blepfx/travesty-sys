@@ -11,6 +11,13 @@ pub const V3_EVENT_SCALE: u16 = 7;
 pub const V3_EVENT_LEGACY_MIDI_CC_OUT: u16 = 65535;
 pub const V3_EVENT_FLAGS_IS_LIVE: u16 = 1 << 0;
 
+pub const V3_EVENT_EXPR_VOLUME: u32 = 0;
+pub const V3_EVENT_EXPR_PAN: u32 = 1;
+pub const V3_EVENT_EXPR_TUNING: u32 = 2;
+pub const V3_EVENT_EXPR_VIBRATO: u32 = 3;
+pub const V3_EVENT_EXPR_EXPRESSION: u32 = 4;
+pub const V3_EVENT_EXPR_BRIGHTNESS: u32 = 5;
+
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct v3_event {
