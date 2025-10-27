@@ -4,6 +4,7 @@ mod com_helpers;
 mod component;
 mod edit_controller;
 mod events;
+mod extras;
 mod factory;
 mod host;
 mod view;
@@ -13,6 +14,7 @@ pub use com_helpers::*;
 pub use component::*;
 pub use edit_controller::*;
 pub use events::*;
+pub use extras::*;
 pub use factory::*;
 pub use host::*;
 pub use view::*;
@@ -26,11 +28,7 @@ pub type v3_char8 = std::ffi::c_char;
 pub type v3_char16 = i16;
 
 const fn v3_const<T: Copy>(win: T, other: T) -> T {
-    if cfg!(windows) {
-        win
-    } else {
-        other
-    }
+    if cfg!(windows) { win } else { other }
 }
 
 pub const fn v3_id(a: u32, b: u32, c: u32, d: u32) -> v3_iid {

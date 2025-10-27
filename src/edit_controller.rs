@@ -1,4 +1,5 @@
 use super::*;
+use std::ffi::CStr;
 
 pub const V3_RESTART_FLAGS_RELOAD_COMPONENT: i32 = 1 << 0;
 pub const V3_RESTART_FLAGS_IO_CHANGED: i32 = 1 << 1;
@@ -18,6 +19,12 @@ pub const V3_PARAM_FLAGS_IS_LIST: i32 = 1 << 3;
 pub const V3_PARAM_FLAGS_IS_HIDDEN: i32 = 1 << 4;
 pub const V3_PARAM_FLAGS_PROGRAM_CHANGE: i32 = 1 << 15;
 pub const V3_PARAM_FLAGS_IS_BYPASS: i32 = 1 << 16;
+
+pub const V3_CHANNEL_INFO_UID: &CStr = c"channel uid";
+pub const V3_CHANNEL_INFO_UID_LENGTH: &CStr = c"channel uid length";
+pub const V3_CHANNEL_INFO_NAME: &CStr = c"channel name";
+pub const V3_CHANNEL_INFO_NAME_LENGTH: &CStr = c"channel name length";
+pub const V3_CHANNEL_INFO_COLOR: &CStr = c"channel color";
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
@@ -233,6 +240,18 @@ pub struct v3_midi_mapping {
     >,
 }
 
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct v3_info_listener {
+    pub v3_funknown: v3_funknown,
+    pub set_channel_context_infos: Option<
+        unsafe extern "system" fn(
+            self_: *mut v3_void,
+            list: *mut *mut v3_attribute_list,
+        ) -> v3_result,
+    >,
+}
+
 unsafe impl ComVtable for v3_unit_information {
     const IID: v3_iid = v3_id(0x3D4BD6B5, 0x913A4FD2, 0xA886E768, 0xA5EB92C1);
     type Super = v3_funknown;
@@ -255,5 +274,10 @@ unsafe impl ComVtable for v3_component_handler2 {
 
 unsafe impl ComVtable for v3_midi_mapping {
     const IID: v3_iid = v3_id(0xDF0FF9F7, 0x49B74669, 0xB63AB732, 0x7ADBF5E5);
+    type Super = v3_funknown;
+}
+
+unsafe impl ComVtable for v3_info_listener {
+    const IID: v3_iid = v3_id(0x0F194781, 0x8D984ADA, 0xBBA0C1EF, 0xC011D8D0);
     type Super = v3_funknown;
 }

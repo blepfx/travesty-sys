@@ -6,7 +6,7 @@ pub const V3_CLASS_CARDINALITY_MANY_INSTANCES: i32 = 0x7FFFFFFF;
 pub const V3_CLASS_CATEGORY_AUDIO_MODULE: &str = "Audio Module Class";
 pub const V3_CLASS_CATEGORY_COMPONENT_CONTROLLER: &str = "Component Controller Class";
 pub const V3_FACTORY_FLAGS_UNICODE: i32 = 0x10;
-pub const V3_SDK_VERSION_STRING: &str = "VST 3.7.4";
+pub const V3_SDK_VERSION_STRING: &str = "VST 3.8.0";
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
