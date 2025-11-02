@@ -21,6 +21,27 @@ pub const V3_SPEAKER_TRR: u64 = 1 << 17;
 pub const V3_SPEAKER_LFE2: u64 = 1 << 18;
 pub const V3_SPEAKER_M: u64 = 1 << 19;
 
+pub const V3_SPEAKER_TSL: u64 = 1 << 24;
+pub const V3_SPEAKER_TSR: u64 = 1 << 25;
+pub const V3_SPEAKER_LCS: u64 = 1 << 26;
+pub const V3_SPEAKER_RCS: u64 = 1 << 27;
+
+pub const V3_SPEAKER_BFL: u64 = 1 << 28;
+pub const V3_SPEAKER_BFC: u64 = 1 << 29;
+pub const V3_SPEAKER_BFR: u64 = 1 << 30;
+
+pub const V3_SPEAKER_PL: u64 = 1 << 31;
+pub const V3_SPEAKER_PR: u64 = 1 << 32;
+
+pub const V3_SPEAKER_LW: u64 = 1 << 59;
+pub const V3_SPEAKER_RW: u64 = 1 << 60;
+
+pub const V3_SPEAKER_BSL: u64 = 1 << 33;
+pub const V3_SPEAKER_BSR: u64 = 1 << 34;
+pub const V3_SPEAKER_BRL: u64 = 1 << 35;
+pub const V3_SPEAKER_BRC: u64 = 1 << 36;
+pub const V3_SPEAKER_BRR: u64 = 1 << 37;
+
 pub const V3_PROCESS_CTX_PLAYING: u32 = 1 << 1;
 pub const V3_PROCESS_CTX_CYCLE_ACTIVE: u32 = 1 << 2;
 pub const V3_PROCESS_CTX_RECORDING: u32 = 1 << 3;
